@@ -42,9 +42,14 @@ function FormList() {
 
   const handleDeleteConfirm = async () => {
     if (selectedFormId) {
-      await deleteForm(selectedFormId);
+      const response = await deleteForm(selectedFormId);
+      if(response.success){
+        toast.success("Form Deleted Successfully", {
+          autoClose: 2000
+        });
       setForms(forms.filter((form) => form._id !== selectedFormId));
       setShowDeletePopup(false);
+      }
     }
   };
   const handleDeleteCancel = () => {

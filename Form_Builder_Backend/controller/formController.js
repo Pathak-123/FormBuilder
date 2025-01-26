@@ -1,16 +1,22 @@
 const Form = require("../Models/Form");
 
-// Get all forms
+
 const getForms = async (req, res) => {
   try {
     const forms = await Form.find();
-    res.status(200).json(forms);
+    return res.status(200).json({
+      success:true,
+      forms
+  });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+});
   }
 };
 
-// Create a new form
+
 const createForm = async (req, res) => {
   try {
     const { title, inputs } = req.body;
@@ -22,31 +28,42 @@ const createForm = async (req, res) => {
     const newForm = new Form({ title, inputs });
     await newForm.save();
 
-    res.status(201).json(newForm);
+    return res.status(201).json({
+      success: true,
+      message: "Form Created Successfully !" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+  });
   }
 };
 
-// Get a specific form by ID
+
 const getFormById = async (req, res) => {
   try {
     const form = await Form.findById(req.params.id);
     if (!form) {
       return res.status(404).json({ message: "Form not found" });
     }
-    res.status(200).json(form);
+    return res.status(200).json({
+      success:true,
+      form
+  });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+});
   }
 };
 
-// Update a form by ID
+
 const updateForm = async (req, res) => {
   try {
     const { title, inputs } = req.body;
     const updatedForm = await Form.findByIdAndUpdate(
-      req.params.id,
+      req.params.formId,
       { title, inputs },
       { new: true }
     );
@@ -54,24 +71,35 @@ const updateForm = async (req, res) => {
     if (!updatedForm) {
       return res.status(404).json({ message: "Form not found" });
     }
-
-    res.status(200).json(updatedForm);
+    res.status(200).json({
+      success: true,
+      message: "Form Updated successfully"
+  });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+      });
   }
 };
 
-// Delete a form by ID
+
 const deleteForm = async (req, res) => {
   try {
-    const deletedForm = await Form.findByIdAndDelete(req.params.id);
+    const deletedForm = await Form.findByIdAndDelete(req.params.formId);
     if (!deletedForm) {
       return res.status(404).json({ message: "Form not found" });
     }
 
-    res.status(200).json({ message: "Form deleted successfully" });
+    res.status(200).json({
+      success:true,
+      message:"Task deleted successfully"
+      });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+  });
   }
 };
 

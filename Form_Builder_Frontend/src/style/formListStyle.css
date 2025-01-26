@@ -1,0 +1,100 @@
+.main-container{
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+    width:80%;
+    margin: 0 auto;
+ }
+ .container{
+     display: flex;
+     justify-content: space-around;
+     min-height: 140px;
+     max-height: 250px;
+     align-items: center;
+     flex-direction: column;
+     width:80%;
+     margin: 0 auto;
+     border-bottom: 1px solid black;
+ }
+ .form-show-container{ 
+     width:80%;
+     margin: 1rem auto;
+ }
+ .show-forms{
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: start;
+     gap: 2rem;
+     align-items: flex-start;
+     margin-top: 1rem;
+ }
+ .container h1{
+     text-align: center;
+ }
+ .form-container{
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+     border-radius: 3px;
+     background-color: white;
+     color: black;
+     width:200px;
+     height: 100px;
+     padding: 0.5rem 1rem;
+     display: flex;
+     justify-content: space-around;
+     flex-direction: column;
+ }
+ .form-links p{
+     overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+     display: inline-block;
+     position: relative;
+     font-size: 18px;
+ }
+ .form-links{
+     display: flex;
+     justify-content: space-around;
+ }
+ .form-links a{
+ text-decoration: none;
+ font-size: 13px;
+ }
+ .form-view{
+     color:green;
+ }
+ .form-edit{
+     color:blue;
+ }
+ .form-delete{
+     color:red;
+     cursor: pointer;
+     font-size: 13px!important;
+ }
+ .form-show-container h2{
+     text-align: left;
+ }
+ .delete-popup {
+     position: fixed;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background-color: rgba(0, 0, 0, 0.5);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 1000;
+   }
+   
+   .popup-content {
+     background-color: white;
+     padding: 20px;
+     border-radius: 5px;
+     text-align: center;
+     width: 300px;
+   }
+   
+   button {
+     margin: 10px;
+   }
+   

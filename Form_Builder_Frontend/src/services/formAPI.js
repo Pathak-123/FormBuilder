@@ -27,9 +27,25 @@ export const getForm = async (id) => {
 };
 
 // Update an existing form by ID
-export const updateForm = async (id, form) => {
-    const response = await axios.put(`${API_URL}/update/${id}`, form, {
+export const updateForm = async (form,formId) => {
+    const response = await axios.put(`${API_URL}/update/${formId}`, form, {
         headers: { 'Content-Type': 'application/json' },
     });
     return response.data;
 };
+
+// export const deleteForm = async (formId) => {
+//     const response = await axios.delete(`${API_URL}/delete/${formId}`);
+//     return response.data;
+// };
+
+export const deleteForm = async (formId) => {
+    try {
+      const response = await axios.delete(`${API_URL}/delete/${formId}`);
+
+      return response.data;
+    } catch (error) {
+        console.log(error);
+      throw error.response.data.message || 'Delete Task failed';
+    }
+  };

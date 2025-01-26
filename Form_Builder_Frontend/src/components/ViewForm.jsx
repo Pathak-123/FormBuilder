@@ -1,60 +1,73 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getForm } from "../services/formAPI";
+import "../style/formListStyle.css";
+import "../style/viewFormStyle.css";
+import { toast } from "react-toastify";
+import Loader from "./Loader";
 
 function ViewForm() {
   const { id } = useParams();
   const [form, setForm] = useState(null);
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchForm() {
-      const data = await getForm(id);
-      setForm(data);
-
-      // Initialize form data
-      const initialData = {};
-      data.inputs.forEach((input) => {
-        initialData[input.title] = "";
-      });
-      setFormData(initialData);
+      try {
+        const response = await getForm(id);
+        if (response.success) {
+          const form = response.form;
+          setForm(form);
+          const initialData = {};
+          form.inputs.forEach((input) => {
+            initialData[input.title] = "";
+          });
+          setFormData(initialData);
+        } else {
+          toast.dismiss();
+          toast.error("Failed to fetch Form");
+        }
+      } catch {
+        toast.dismiss();
+        toast.error("Failed to fetch Form");
+      } finally {
+        setLoading(false);
+      }
     }
     fetchForm();
   }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleSubmit = () => {
-    console.log("Form Submitted:", formData);
-    alert("Form submitted successfully!");
+    const emailField = form.inputs.find(input => input.type === "email");
+    if (emailField) {
+      const emailValue = formData[emailField.title];
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(emailValue)) {
+        toast.error("Please enter a valid email address.");
+        return; 
+      }
+    }
+    toast.success("Form Submitted Successfully");
+    navigate("/");
   };
 
-  if (!form) return <div>Loading...</div>;
+  if (loading) return <Loader />
 
   return (
-    <div className="container">
-      <h1>{form.title}</h1>
-      <form onSubmit={(e) => e.preventDefault()}>
+    <div className="view-container">
+      <h1 className="view-form-title">{form.title}</h1>
+      <form className="show-view-from">
         {form.inputs.map((input, index) => (
-          <div key={index}>
-            <label>{input.title}</label>
-            <input
-              type={input.type}
-              name={input.title}
-              placeholder={input.placeholder}
-              value={formData[input.title]}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <input placeholder={input.title} type={input.type} key={index} className="view-form-field" />
+           
         ))}
-        <button type="submit" onClick={handleSubmit}>
-          Submit
-        </button>
       </form>
+
+      <button type="submit" onClick={handleSubmit} className="btn">
+        Submit
+      </button>
     </div>
   );
 }

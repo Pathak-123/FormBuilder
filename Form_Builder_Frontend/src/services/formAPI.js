@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "http://localhost:3000/api/v1/forms";
+const API_URL = "https://formbuilder-tspl.onrender.com/api/v1/forms";
 
 // Fetch all forms
 export const getForms = async () => {
